@@ -1,21 +1,28 @@
 CC    = gcc
-FLAGS = -I ./headers
-SRCS  = $(wildcard ./**/*.c)
+SRCS  = $(wildcard ./srcs/**/*.c ./srcs/*.c)
 OBJS  = $(SRCS:.c=.o)
-NAME  = malloc
+BIN   = malloc
+LIB   = utils
+FLAGS = -Iheaders/ -Ilib/headers/ 
 
-all: $(NAME)
+all: $(BIN)
 
-$(NAME): $(OBJS) main.c
-	$(CC) $(FLAGS) main.c $(OBJS) -o $(NAME)
+$(BIN): $(LIB) $(OBJS) main.c
+	$(CC) $(FLAGS) main.c ./lib/$(LIB) -o $(BIN)
 
 %.o: %.c headers/*
-	$(CC) $(FLAGS) -o $@ -c $<
+	$(CC) $(FLAGS) -o $@ -c $< ./lib/$(LIB)
+
+$(LIB):
+	$(MAKE) -C lib
 
 clean:
-	rm -rf ./**/*.o
+	rm -rf ./srcs/**/*.o
+	rm -rf ./srcs/*.o
+	$(MAKE) -C lib clean
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(BIN)
+	$(MAKE) -C lib fclean
 
 re: fclean all

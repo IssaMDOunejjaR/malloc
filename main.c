@@ -1,10 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include "print.h"
 
 int main(void) {
-  char *ptr = malloc(1);
-
-  ptr[128] = 'a';
+  ft_putendl("Hello, World!");
 
   return 0;
 }
